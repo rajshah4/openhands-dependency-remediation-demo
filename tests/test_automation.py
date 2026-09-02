@@ -30,6 +30,16 @@ def test_prompt_is_loaded_from_file() -> None:
     assert "prompt_file" not in payload
 
 
+def test_customer_facing_prompt_contains_no_scenario_specific_fix() -> None:
+    prompt = load_prompt_automation(SPEC)["prompt"]
+
+    assert "2.14.1" not in prompt
+    assert "2.17.1" not in prompt
+    assert "demo/log4j" not in prompt
+    assert "CVE-2021-44228" not in prompt
+    assert "log4j" not in prompt.lower()
+
+
 def test_sample_event_matches_filter_contract() -> None:
     event = json.loads((ROOT / "tests/fixtures/jira-dependency-requested.json").read_text())
 
