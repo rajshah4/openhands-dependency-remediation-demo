@@ -18,33 +18,38 @@ The command-injection repository and `Security Demo - Jira SAST Remediation` aut
 
 ## Registration
 
-The customer-safe preset is already registered as automation `19946faf-721e-496a-afb4-0944d2fe98e0` and is disabled by default. Do not run the registration script during normal rehearsal; doing so would create a duplicate. Use `scripts/register_automation.py` only to replace a deleted automation.
+The customer-safe preset is already registered as automation `19946faf-721e-496a-afb4-0944d2fe98e0`. Do not run the registration script during normal rehearsal; doing so would create a duplicate. Use `scripts/register_automation.py` only to replace a deleted automation.
 
 ## Validated rehearsal
 
-On September 2, 2026, the final customer-safe prompt completed in 5 minutes 37 seconds:
+On September 2, 2026, the final customer-safe prompt completed the fresh-ticket workflow in 3 minutes 36 seconds:
 
-- Jira: [KAN-168](https://rajiv-shah.atlassian.net/browse/KAN-168)
-- Draft PR: [#2](https://github.com/rajshah4/openhands-dependency-remediation-demo/pull/2)
-- OpenHands conversation: [f21391b1-db21-43c2-b577-05a7acb5b619](https://app.replicated.rajistics.com/conversations/f21391b1-db21-43c2-b577-05a7acb5b619)
+- Jira: [KAN-171](https://rajiv-shah.atlassian.net/browse/KAN-171)
+- Draft PR: [#3](https://github.com/rajshah4/openhands-dependency-remediation-demo/pull/3)
+- OpenHands conversation: [1115ff24-5de1-452d-be94-4b2ae6e75861](https://app.replicated.rajistics.com/conversations/1115ff24-5de1-452d-be94-4b2ae6e75861)
 - CI: successful
 - PR diff: `pom.xml` only
-- Final automation state: disabled
+- Dependency automation state after rehearsal: enabled
 
 The customer-facing automation prompt contains no scenario-specific package, branch, CVE, or version values; those controls live in repository policy and the scanner evidence.
 
-
 ## Rehearsal
 
-### 1. Prepare the existing Jira Task
+### 1. Pause the broad SDLC automation
+
+Before creating the Jira Task, disable `SDLC_1 - Jira to PR` in the Rajistics Automations UI. It has an unfiltered `jira:issue_created` trigger and will otherwise launch alongside this demo. Do not change its definition, and restore its previous enabled state after the ticket is created.
+
+### 2. Create a fresh Jira Task
 
 ```bash
-uv run python scripts/prepare_demo_jira_ticket.py KAN-168 --apply
+ticket="$(uv run python scripts/create_demo_jira_ticket.py --apply)"
+issue_key="$(jq -r .key <<<"$ticket")"
+echo "$ticket"
 ```
 
-This updates a pre-existing Task with the Snyk report context and label. It cannot emit Jira's issue-created event, so the enabled broad `SDLC_1 - Jira to PR` automation and the disabled SAST automation are not triggered.
+This creates a uniquely labeled KAN Task containing the Snyk-style report context and acceptance criteria. Restore `SDLC_1 - Jira to PR` after creation.
 
-### 2. Enable only the dependency automation
+### 3. Ensure the dependency automation is enabled
 
 ```bash
 uv run python scripts/set_automation.py enable --apply
@@ -52,15 +57,15 @@ uv run python scripts/set_automation.py enable --apply
 
 This command cannot modify the SDLC or SAST automations.
 
-### 3. Start the approved manual event
+### 4. Start the approved manual event
 
 ```bash
-uv run python scripts/trigger_dependency_demo.py KAN-### --apply
+uv run python scripts/trigger_dependency_demo.py "$issue_key" --apply
 ```
 
 The script fetches the current Jira issue, validates project/type/label, confirms exactly one enabled automation matches `dependency:requested`, signs the event, and sends it to the existing verified webhook source.
 
-### 4. Narrate the evidence
+### 5. Narrate the evidence
 
 Show:
 
@@ -72,13 +77,13 @@ Show:
 6. Draft PR targeting `demo/log4j`.
 7. Jira comment linking the PR, CI, and exact OpenHands conversation.
 
-### 5. Disable the new automation
+### 6. Optionally disable the dependency automation
 
 ```bash
 uv run python scripts/set_automation.py disable --apply
 ```
 
-The existing automations should have the same enabled states and definitions they had before the rehearsal.
+Leave it enabled only when you want it ready for another signed manual event. Confirm the SDLC automation has been restored to its pre-demo state.
 
 ## Ten-minute pacing
 
@@ -92,7 +97,7 @@ If the finding does not reproduce within two minutes, stop and use the existing 
 
 ## Reset
 
-Do not merge a remediation PR. For another run, prepare KAN-168 again and let the agent create a unique `fix/KAN-168-log4j` branch, with a numeric suffix when needed, from unchanged `demo/log4j`.
+Do not merge a remediation PR. For another run, create a fresh Jira Task and let the agent create a Jira-linked fix branch from unchanged `demo/log4j`.
 
 ## Positioning
 
