@@ -16,16 +16,9 @@ Demonstrate Jira-driven remediation of a Snyk-style Maven finding in under ten m
 
 The command-injection repository and `Security Demo - Jira SAST Remediation` automation remain an unchanged fallback.
 
-## One-time registration
+## Registration
 
-The preset is disabled by default.
-
-```bash
-set -a
-source ~/Code/install_replicate/.env
-set +a
-uv run python scripts/register_automation.py --apply
-```
+The customer-safe preset is already registered as automation `19946faf-721e-496a-afb4-0944d2fe98e0` and is disabled by default. Do not run the registration script during normal rehearsal; doing so would create a duplicate. Use `scripts/register_automation.py` only to replace a deleted automation.
 
 ## Validated rehearsal
 
