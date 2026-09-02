@@ -1,0 +1,39 @@
+import json
+from pathlib import Path
+
+from dependency_demo.automation import load_prompt_automation
+
+ROOT = Path(__file__).resolve().parents[1]
+SPEC = ROOT / "automations/jira/dependency-remediation/automation.prompt-preset.json"
+
+
+def test_prompt_automation_is_isolated_and_disabled() -> None:
+    payload = load_prompt_automation(SPEC)
+
+    assert payload["name"] == "Dependency Demo - Jira Snyk Remediation"
+    assert payload["enabled"] is False
+    assert payload["timeout"] == 600
+    assert payload["trigger"]["source"] == "jira-direct"
+    assert payload["trigger"]["on"] == "dependency:requested"
+    assert payload["repos"] == [
+        {
+            "url": "https://github.com/rajshah4/openhands-dependency-remediation-demo",
+            "ref": "demo/log4j",
+        }
+    ]
+
+
+def test_prompt_is_loaded_from_file() -> None:
+    payload = load_prompt_automation(SPEC)
+
+    assert "Complete within ten minutes" in payload["prompt"]
+    assert "prompt_file" not in payload
+
+
+def test_sample_event_matches_filter_contract() -> None:
+    event = json.loads((ROOT / "tests/fixtures/jira-dependency-requested.json").read_text())
+
+    assert event["webhookEvent"] == "dependency:requested"
+    assert event["issue"]["fields"]["project"]["key"] == "KAN"
+    assert event["issue"]["fields"]["issuetype"]["name"] == "Bug"
+    assert "dependency-remediation" in event["issue"]["fields"]["labels"]

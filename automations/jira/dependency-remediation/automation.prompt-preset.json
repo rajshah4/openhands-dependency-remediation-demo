@@ -1,0 +1,30 @@
+{
+  "name": "Dependency Demo - Jira Snyk Remediation",
+  "preset": "prompt",
+  "prompt_file": "prompt.md",
+  "trigger": {
+    "type": "event",
+    "source": "jira-direct",
+    "on": "dependency:requested",
+    "filter": "issue.fields.project.key == 'KAN' && issue.fields.issuetype.name == 'Bug' && contains(issue.fields.labels, 'dependency-remediation')"
+  },
+  "repos": [
+    {
+      "url": "https://github.com/rajshah4/openhands-dependency-remediation-demo",
+      "ref": "demo/log4j"
+    }
+  ],
+  "timeout": 600,
+  "keep_alive": true,
+  "model": "Bedrock-Claude-Sonnet-4-5-fast",
+  "enabled": false,
+  "template": {
+    "id": "rajistics-jira-dependency-remediation-demo",
+    "version": "1.0.0",
+    "config": {
+      "project": "KAN",
+      "issue_type": "Bug",
+      "label": "dependency-remediation"
+    }
+  }
+}

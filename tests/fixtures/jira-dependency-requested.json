@@ -1,0 +1,12 @@
+{
+  "webhookEvent": "dependency:requested",
+  "issue": {
+    "key": "KAN-999",
+    "fields": {
+      "project": {"key": "KAN"},
+      "issuetype": {"name": "Bug"},
+      "labels": ["dependency-remediation"],
+      "summary": "[SNYK] Upgrade Log4j in trade audit service"
+    }
+  }
+}
