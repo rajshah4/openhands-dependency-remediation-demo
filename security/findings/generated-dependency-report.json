@@ -1,6 +1,0 @@
-{
-  "finding_count": 0,
-  "findings": [],
-  "scanner": "snyk",
-  "source_report": "security/reports/snyk-log4shell.json"
-}

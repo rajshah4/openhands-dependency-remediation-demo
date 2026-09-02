@@ -4,3 +4,4 @@ __pycache__/
 .ruff_cache/
 *.pyc
 jira-automation-registration-results.json
+security/findings/generated-dependency-report.json
