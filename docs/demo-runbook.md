@@ -27,6 +27,20 @@ set +a
 uv run python scripts/register_automation.py --apply
 ```
 
+## Validated rehearsal
+
+On September 2, 2026, the final customer-safe prompt completed in 5 minutes 37 seconds:
+
+- Jira: [KAN-168](https://rajiv-shah.atlassian.net/browse/KAN-168)
+- Draft PR: [#2](https://github.com/rajshah4/openhands-dependency-remediation-demo/pull/2)
+- OpenHands conversation: [f21391b1-db21-43c2-b577-05a7acb5b619](https://app.replicated.rajistics.com/conversations/f21391b1-db21-43c2-b577-05a7acb5b619)
+- CI: successful
+- PR diff: `pom.xml` only
+- Final automation state: disabled
+
+The customer-facing automation prompt contains no scenario-specific package, branch, CVE, or version values; those controls live in repository policy and the scanner evidence.
+
+
 ## Rehearsal
 
 ### 1. Prepare the existing Jira Task
