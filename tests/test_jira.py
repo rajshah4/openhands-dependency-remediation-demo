@@ -1,11 +1,11 @@
 from dependency_demo.jira import DISCLOSURE, demo_issue_fields, jira_comment
 
 
-def test_demo_issue_has_unique_bug_trigger_contract() -> None:
+def test_demo_issue_has_unique_task_contract() -> None:
     fields = demo_issue_fields()
 
     assert fields["project"] == {"key": "KAN"}
-    assert fields["issuetype"] == {"name": "Bug"}
+    assert fields["issuetype"] == {"name": "Task"}
     assert fields["labels"] == ["dependency-remediation"]
     assert fields["summary"].startswith("[SNYK]")
 

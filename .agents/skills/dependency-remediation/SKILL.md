@@ -10,7 +10,7 @@ triggers:
 
 # Dependency remediation
 
-Use this skill only for the controlled Jira Bug labeled `dependency-remediation`.
+Use this skill only for the controlled Jira Task labeled `dependency-remediation`.
 
 ## Workflow
 
@@ -24,7 +24,7 @@ Use this skill only for the controlled Jira Bug labeled `dependency-remediation`
    ```
 
 4. Confirm exactly one critical `SNYK-JAVA-ORGAPACHELOGGINGLOG4J-2314720` finding for `org.apache.logging.log4j:log4j-core` version `2.14.1`, fixed in `2.17.1`.
-5. Create `fix/<jira-key>-log4j` from `demo/log4j`.
+5. Create a unique branch beginning `fix/<jira-key>-log4j` from `demo/log4j`; append a numeric suffix if that branch already exists.
 6. Change only the `log4j2.version` property in `pom.xml` from `2.14.1` to `2.17.1`. Do not alter the report fixture, parser, tests, or acceptance gate.
 7. Run all validation from `AGENTS.md`; the final finding count must be zero.
 8. Review the diff and confirm only `pom.xml` changed.

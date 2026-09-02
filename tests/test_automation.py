@@ -35,5 +35,5 @@ def test_sample_event_matches_filter_contract() -> None:
 
     assert event["webhookEvent"] == "dependency:requested"
     assert event["issue"]["fields"]["project"]["key"] == "KAN"
-    assert event["issue"]["fields"]["issuetype"]["name"] == "Bug"
+    assert event["issue"]["fields"]["issuetype"]["name"] == "Task"
     assert "dependency-remediation" in event["issue"]["fields"]["labels"]
