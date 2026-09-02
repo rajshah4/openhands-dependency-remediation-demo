@@ -22,7 +22,7 @@ def adf_document(paragraphs: list[str]) -> dict[str, Any]:
 def demo_issue_fields(project: str = "KAN") -> dict[str, Any]:
     return {
         "project": {"key": project},
-        "issuetype": {"name": "Bug"},
+        "issuetype": {"name": "Task"},
         "summary": "[SNYK] Upgrade Log4j in trade audit service",
         "labels": ["dependency-remediation"],
         "description": adf_document(

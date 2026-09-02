@@ -4,7 +4,7 @@
     "key": "KAN-999",
     "fields": {
       "project": {"key": "KAN"},
-      "issuetype": {"name": "Bug"},
+      "issuetype": {"name": "Task"},
       "labels": ["dependency-remediation"],
       "summary": "[SNYK] Upgrade Log4j in trade audit service"
     }

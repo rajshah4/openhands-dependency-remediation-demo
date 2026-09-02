@@ -59,8 +59,8 @@ def main() -> int:
     issue_fields = issue["fields"]
     if issue_fields["project"]["key"] != "KAN":
         raise SystemExit("issue must be in KAN")
-    if issue_fields["issuetype"]["name"] != "Bug":
-        raise SystemExit("issue type must be Bug")
+    if issue_fields["issuetype"]["name"] != "Task":
+        raise SystemExit("issue type must be Task")
     if "dependency-remediation" not in issue_fields.get("labels", []):
         raise SystemExit("issue must have dependency-remediation label")
 

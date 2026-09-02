@@ -10,7 +10,8 @@ Demonstrate Jira-driven remediation of a Snyk-style Maven finding in under ten m
 - Clean branch: `main`
 - Vulnerable branch: `demo/log4j`
 - Event: `dependency:requested`
-- Jira contract: KAN Bug with label `dependency-remediation`
+- Jira contract: KAN Task with label `dependency-remediation`
+- Rehearsal issue: existing KAN-168
 - Automation: `Dependency Demo - Jira Snyk Remediation`
 
 The command-injection repository and `Security Demo - Jira SAST Remediation` automation remain an unchanged fallback.
@@ -28,13 +29,13 @@ uv run python scripts/register_automation.py --apply
 
 ## Rehearsal
 
-### 1. Create the Jira Bug
+### 1. Prepare the existing Jira Task
 
 ```bash
-uv run python scripts/create_demo_jira_ticket.py --apply
+uv run python scripts/prepare_demo_jira_ticket.py KAN-168 --apply
 ```
 
-Creating a Bug does not use the existing Task-based SAST contract. Record the returned Jira key.
+This updates a pre-existing Task with the Snyk report context and label. It cannot emit Jira's issue-created event, so the enabled broad `SDLC_1 - Jira to PR` automation and the disabled SAST automation are not triggered.
 
 ### 2. Enable only the dependency automation
 
@@ -84,7 +85,7 @@ If the finding does not reproduce within two minutes, stop and use the existing 
 
 ## Reset
 
-Do not merge a remediation PR. For another run, create a new Jira Bug and let the agent create a unique `fix/<jira-key>-log4j` branch from unchanged `demo/log4j`.
+Do not merge a remediation PR. For another run, prepare KAN-168 again and let the agent create a unique `fix/KAN-168-log4j` branch, with a numeric suffix when needed, from unchanged `demo/log4j`.
 
 ## Positioning
 
