@@ -9,7 +9,7 @@ from typing import Any
 def event_body(issue: dict[str, Any]) -> bytes:
     payload = {
         "issue": issue,
-        "webhookEvent": "dependency:requested",
+        "webhookEvent": "jira:issue_created",
     }
     return json.dumps(payload, separators=(",", ":"), sort_keys=True).encode()
 

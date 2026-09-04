@@ -12,7 +12,7 @@ from urllib.request import Request, urlopen
 from dependency_demo.webhook import event_body, github_style_signature
 
 SOURCE = "jira-direct"
-EVENT = "dependency:requested"
+EVENT = "jira:issue_created"
 DEFAULT_HOST = "https://app.replicated.rajistics.com"
 
 
