@@ -69,7 +69,7 @@ Show:
 
 1. Jira report context and acceptance criteria.
 2. Initial normalized finding: Log4j `2.14.1`, CVE-2021-44228, count one.
-3. Repository-owned dependency-remediation skill.
+3. Reusable repository-owned security-remediation skill, narrowed by repository policy.
 4. Minimal `pom.xml` change to `2.17.1`.
 5. Tests, Ruff, and final finding count zero.
 6. Draft PR targeting `demo/log4j`.
