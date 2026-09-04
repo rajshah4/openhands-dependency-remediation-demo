@@ -9,9 +9,8 @@ Demonstrate Jira-driven remediation of a Snyk-style Maven finding in under ten m
 - Repository: `rajshah4/openhands-dependency-remediation-demo`
 - Clean branch: `main`
 - Vulnerable branch: `demo/log4j`
-- Event: `dependency:requested`
+- Event: `jira:issue_created`
 - Jira contract: KAN Task with label `dependency-remediation`
-- Rehearsal issue: existing KAN-168
 - Automation: `Dependency Demo - Jira Snyk Remediation`
 
 The command-injection repository and `Security Demo - Jira SAST Remediation` automation remain an unchanged fallback.
@@ -20,9 +19,9 @@ The command-injection repository and `Security Demo - Jira SAST Remediation` aut
 
 The customer-safe preset is already registered as automation `19946faf-721e-496a-afb4-0944d2fe98e0`. Do not run the registration script during normal rehearsal; doing so would create a duplicate. Use `scripts/register_automation.py` only to replace a deleted automation.
 
-## Validated rehearsal
+## Validated remediation baseline
 
-On September 2, 2026, the final customer-safe prompt completed the fresh-ticket workflow in 3 minutes 36 seconds:
+On September 2, 2026, the customer-safe remediation path completed in 3 minutes 36 seconds:
 
 - Jira: [KAN-171](https://rajiv-shah.atlassian.net/browse/KAN-171)
 - Draft PR: [#3](https://github.com/rajshah4/openhands-dependency-remediation-demo/pull/3)
@@ -31,25 +30,18 @@ On September 2, 2026, the final customer-safe prompt completed the fresh-ticket 
 - PR diff: `pom.xml` only
 - Dependency automation state after rehearsal: enabled
 
+On September 3, 2026, routing changed from a manual signed event to the filtered Jira issue-created event. The prompt, repository policy, and remediation behavior did not change.
+
+
 The customer-facing automation prompt contains no scenario-specific package, branch, CVE, or version values; those controls live in repository policy and the scanner evidence.
 
 ## Rehearsal
 
 ### 1. Pause the broad SDLC automation
 
-Before creating the Jira Task, disable `SDLC_1 - Jira to PR` in the Rajistics Automations UI. It has an unfiltered `jira:issue_created` trigger and will otherwise launch alongside this demo. Do not change its definition, and restore its previous enabled state after the ticket is created.
+Before creating the Jira Task, disable `SDLC_1 - Jira to PR` in the Rajistics Automations UI. It has an unfiltered `jira:issue_created` trigger and will otherwise launch alongside this demo. Do not change its definition.
 
-### 2. Create a fresh Jira Task
-
-```bash
-ticket="$(uv run python scripts/create_demo_jira_ticket.py --apply)"
-issue_key="$(jq -r .key <<<"$ticket")"
-echo "$ticket"
-```
-
-This creates a uniquely labeled KAN Task containing the Snyk-style report context and acceptance criteria. Restore `SDLC_1 - Jira to PR` after creation.
-
-### 3. Ensure the dependency automation is enabled
+### 2. Ensure the dependency automation is enabled
 
 ```bash
 uv run python scripts/set_automation.py enable --apply
@@ -57,13 +49,19 @@ uv run python scripts/set_automation.py enable --apply
 
 This command cannot modify the SDLC or SAST automations.
 
-### 4. Start the approved manual event
+### 3. Create a fresh Jira Task
 
 ```bash
-uv run python scripts/trigger_dependency_demo.py "$issue_key" --apply
+uv run python scripts/create_demo_jira_ticket.py --apply
 ```
 
-The script fetches the current Jira issue, validates project/type/label, confirms exactly one enabled automation matches `dependency:requested`, signs the event, and sends it to the existing verified webhook source.
+Creation automatically launches the dependency automation when the new issue is a KAN Task labeled `dependency-remediation`. No second trigger is required.
+
+### 4. Restore SDLC and confirm the run
+
+Restore `SDLC_1 - Jira to PR` to its previous enabled state immediately after the ticket is created. In Rajistics, open `Dependency Demo - Jira Snyk Remediation` and confirm a new run appears for the new Jira key.
+
+For backfill only, `scripts/trigger_dependency_demo.py` can replay an issue-created payload. Keep every other enabled `jira:issue_created` automation paused before using it.
 
 ### 5. Narrate the evidence
 
@@ -83,12 +81,12 @@ Show:
 uv run python scripts/set_automation.py disable --apply
 ```
 
-Leave it enabled only when you want it ready for another signed manual event. Confirm the SDLC automation has been restored to its pre-demo state.
+Leave it enabled only when you want labeled Jira Task creation to launch remediation automatically. Confirm the SDLC automation has been restored to its pre-demo state.
 
 ## Ten-minute pacing
 
-- 0:00–1:00: Jira and Snyk-style report
-- 1:00–2:00: signed manual trigger and conversation start
+- 0:00–1:00: create the Jira Task from the Snyk-style report
+- 1:00–2:00: automatic conversation start
 - 2:00–6:00: reproduce, inspect, and remediate
 - 6:00–8:00: tests, lint, and clean rescan
 - 8:00–10:00: PR and Jira evidence

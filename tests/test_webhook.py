@@ -7,7 +7,7 @@ def test_event_body_is_stable_and_scoped() -> None:
     body = event_body({"key": "KAN-999", "fields": {"labels": ["dependency-remediation"]}})
     payload = json.loads(body)
 
-    assert payload["webhookEvent"] == "dependency:requested"
+    assert payload["webhookEvent"] == "jira:issue_created"
     assert payload["issue"]["key"] == "KAN-999"
 
 

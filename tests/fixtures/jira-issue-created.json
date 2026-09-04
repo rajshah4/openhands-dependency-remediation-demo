@@ -1,5 +1,5 @@
 {
-  "webhookEvent": "dependency:requested",
+  "webhookEvent": "jira:issue_created",
   "issue": {
     "key": "KAN-999",
     "fields": {

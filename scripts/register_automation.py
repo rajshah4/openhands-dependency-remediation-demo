@@ -12,7 +12,7 @@ from dependency_demo.automation import load_prompt_automation
 
 ROOT = Path(__file__).resolve().parents[1]
 SPEC = ROOT / "automations/jira/dependency-remediation/automation.prompt-preset.json"
-SAMPLE_EVENT = ROOT / "tests/fixtures/jira-dependency-requested.json"
+SAMPLE_EVENT = ROOT / "tests/fixtures/jira-issue-created.json"
 DEFAULT_HOST = "https://app.replicated.rajistics.com"
 
 

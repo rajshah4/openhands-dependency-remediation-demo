@@ -14,7 +14,7 @@ def test_prompt_automation_is_isolated_and_disabled() -> None:
     assert payload["enabled"] is False
     assert payload["timeout"] == 600
     assert payload["trigger"]["source"] == "jira-direct"
-    assert payload["trigger"]["on"] == "dependency:requested"
+    assert payload["trigger"]["on"] == "jira:issue_created"
     assert payload["repos"] == [
         {
             "url": "https://github.com/rajshah4/openhands-dependency-remediation-demo",
@@ -41,9 +41,9 @@ def test_customer_facing_prompt_contains_no_scenario_specific_fix() -> None:
 
 
 def test_sample_event_matches_filter_contract() -> None:
-    event = json.loads((ROOT / "tests/fixtures/jira-dependency-requested.json").read_text())
+    event = json.loads((ROOT / "tests/fixtures/jira-issue-created.json").read_text())
 
-    assert event["webhookEvent"] == "dependency:requested"
+    assert event["webhookEvent"] == "jira:issue_created"
     assert event["issue"]["fields"]["project"]["key"] == "KAN"
     assert event["issue"]["fields"]["issuetype"]["name"] == "Task"
     assert "dependency-remediation" in event["issue"]["fields"]["labels"]

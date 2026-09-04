@@ -9,9 +9,8 @@ Created by an OpenHands AI agent on behalf of Rajiv Shah.
 ## Story
 
 ```text
-Snyk-style report in Jira
-→ approved manual event
-→ OpenHands reproduces one finding
+Labeled Snyk-style finding created in Jira
+→ OpenHands automatically reproduces one finding
 → Maven property upgraded
 → tests, lint, and scanner pass
 → draft PR opened
@@ -23,7 +22,8 @@ Snyk-style report in Jira
 - `main` is clean at Log4j `2.17.1`.
 - `demo/log4j` contains the controlled `2.14.1` finding.
 - Fix branches target `demo/log4j`, never `main`.
-- The automation is independent of the existing command-injection demo and uses the unique `dependency:requested` event.
+- The automation matches only KAN Tasks labeled `dependency-remediation`.
+- Pause any broader `jira:issue_created` automation before creating a demo ticket.
 - Human review and merge are mandatory.
 
 ## Local validation
