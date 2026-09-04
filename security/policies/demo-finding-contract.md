@@ -1,6 +1,8 @@
-# Finding contract
+# Controlled repository finding contract
 
-The demo accepts exactly one normalized finding with these values:
+This repository adapter constrains the broad security-remediation workflow to one deterministic test fixture. These values are demo data, not reusable skill policy.
+
+The repository accepts exactly one normalized finding with these values:
 
 ```json
 {
